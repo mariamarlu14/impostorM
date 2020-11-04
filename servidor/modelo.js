@@ -3,7 +3,7 @@ function Juego(){
 	this.partidas={};
 	this.crearPartida=function(num,owner){	
 		//comprobar los limites de num
-		let codigo=this.obtenerCodigo();
+		let codigo="underfine";
 		if (!this.partidas[codigo]){
 			this.partidas[codigo]=new Partida(num,owner.nick);
 			owner.partida=this.partidas[codigo];
