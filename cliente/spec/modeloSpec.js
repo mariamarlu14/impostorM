@@ -13,6 +13,13 @@ describe("El juego del impostor", function() {
   	expect(usr.juego).not.toBe(undefined);
   });
 
+  it("comprobar valores de la partida",function(){
+  	var codigo=juego.crearPartida(3,usr);
+  	expect(codigo).toBe("fallo");
+  	codigo=juego.crearPartida(11,usr);
+  	expect(codigo).toBe("fallo");
+  });
+
   describe("el usr Pepe crea una partida de 4 jugadores",function(){
 	var codigo;
 	beforeEach(function() {

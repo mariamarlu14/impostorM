@@ -1,0 +1,26 @@
+{
+  "name": "impostor",
+  "version": "1.0.0",
+  "description": "trabajo de procesos",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node servidor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariamarlu14/impostor.git"
+  },
+  "keywords": [
+    "juego"
+  ],
+  "author": "MML",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariamarlu14/impostor/issues"
+  },
+  "homepage": "https://github.com/mariamarlu14/impostor#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jasmine-node": "^3.0.0"
+  }
+}
