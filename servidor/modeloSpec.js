@@ -7,6 +7,7 @@ describe("El juego del impostor", function() {
   beforeEach(function() {
   	juego=new modelo.Juego();
   	usr=new modelo.Usuario("Pepe",juego);
+  	nick="Pepe";
   });
 
   it("comprobar valores iniciales del juego", function() {
@@ -16,16 +17,16 @@ describe("El juego del impostor", function() {
   });
 
   it("comprobar valores de la partida",function(){
-  	var codigo=juego.crearPartida(3,usr);
+  	var codigo=juego.crearPartida(3,nick);
   	expect(codigo).toBe("fallo");
-  	codigo=juego.crearPartida(11,usr);
+  	codigo=juego.crearPartida(11,nick);
   	expect(codigo).toBe("fallo");
   });
 
   describe("el usr Pepe crea una partida de 4 jugadores",function(){
 	var codigo;
 	beforeEach(function() {
-	  	codigo=usr.crearPartida(4);
+	  	codigo=usr.crearPartida(4,nick);
 	  });
 
 	it("se comprueba la partida",function(){ 	
@@ -65,7 +66,8 @@ describe("El juego del impostor", function() {
 	  	var num=Object.keys(juego.partidas[codigo].usuarios).length;
 	  	expect(num).toEqual(4);
 		expect(juego.partidas[codigo].fase.nombre).toEqual("completado");		
-		usr.iniciarPartida();
+		//usr.iniciarPartida();
+		juego.iniciarPartida(nick,codigo);
 		expect(juego.partidas[codigo].fase.nombre).toEqual("jugando");
 	})
    });

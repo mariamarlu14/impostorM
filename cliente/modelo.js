@@ -4,7 +4,7 @@ function Juego(){
 		//comprobar los limites de num
 		let codigo=this.obtenerCodigo();
 		if (!this.partidas[codigo]){
-			this.partidas[codigo]=new Partida(num,owner.nick);
+			this.partidas[codigo]=new Partida(num,owner.nick,codigo);
 			owner.partida=this.partidas[codigo];
 		}
 		return codigo;
@@ -24,6 +24,12 @@ function Juego(){
 			codigo.push(letras[randomInt(1,maxCadena)-1]);
 		}
 		return codigo.join('');
+	}
+	this.iniciarPartida=function(nick,codigo){
+		var owner=this.partidas[codigo].nickOwner;
+		if(nick==owner){
+			this.partidas[codigo].iniciarPartida();
+		}
 	}
 }
 

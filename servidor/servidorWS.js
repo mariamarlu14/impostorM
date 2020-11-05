@@ -22,7 +22,7 @@ function ServidorWS(){
 		    socket.on('crearPartida', function(nick,numero) {
 		        console.log('usuario : '+nick+" crea partida : "+numero);
 		        var usr=new modelo.Usuario(nick);
-				var codigo=juego.crearPartida(numero,usr);
+				var codigo=juego.crearPartida(numero,nick);
 				socket.join(codigo);		        				
 		       	cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo, "owner":nick});		        		        
 		    });
@@ -31,12 +31,19 @@ function ServidorWS(){
 				socket.join(codigo);
 				var owner=juego.partidas[codigo].nickOwner;
 				cli.enviarRemitente(socket,"unidoAPartida",{"codigo":codigo,"owner":owner});	
-				cli.enviarATodos(socket,codigo,"nuevoJugador",nick);	
+				cli.enviarATodosMenosRemitente(socket,codigo,"nuevoJugador",nick);	
 
 		    });
 		    socket.on('iniciarPartida',function(nick,codigo){
 				//cli.enviarATodosr(socket,codigo,"partidaIniciada",fase);	
-
+				juego.iniciarPartida(nick,codigo);
+				var fase=juego.partidas[codigo].fase.nombre;
+				cli.enviarATodos(io,codigo,"partidaIniciada",fase);
+		    });
+		    socket.on('listaPartidasDisponibles',function(){
+				
+				var lista=juego.listaPartidas();
+				cli.enviarRemitente(socket,"recibirListaPartidasDisponibles",lista);
 		    });
 		});
 
