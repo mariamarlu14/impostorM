@@ -15,7 +15,7 @@ function Juego(){
 			this.partidas[codigo].agregarUsuario(nick);
 		}
 	}
-	
+	cw.mostrarModalTarea(ws.encargo
 	this.obtenerCodigo=function(){
 		let cadena="ABCDEFGHIJKLMNOPQRSTUVXYZ";
 		let letras=cadena.split('');
