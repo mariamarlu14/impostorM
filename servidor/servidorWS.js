@@ -21,7 +21,7 @@ function ServidorWS(){
 		io.on('connection',function(socket){		    
 		    socket.on('crearPartida', function(nick,numero) {
 		        console.log('usuario : '+nick+" crea partida : "+numero);
-		        var usr=new modelo.Usuario(nick);
+		        //var usr=new modelo.Usuario(nick);
 				var codigo=juego.crearPartida(numero,nick);
 				socket.join(codigo);		        				
 		       	cli.enviarRemitente(socket,"partidaCreada",{"codigo":codigo, "owner":nick});		        		        
