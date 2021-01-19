@@ -40,11 +40,25 @@ app.get('/crearPartida/:nick/:numero', function(request,response){
 
 });
 
-app.get('/unirAPartida/:nick', function(request,response){
+app.get('/unirAPartida/:nick/:codigo', function(request,response){
 	var nick=request.params.nick;
-	var usr=new modelo.Usuario(nick);
-
+	var codigo=request.params.codigo;
+	var res=juego.unirAPartida(codigo,nick);
+	response.send({"res":res});
 });
+
+app.get("/listaPartidas",function(request,response){
+	var lista= juego.listaPartidas();
+	response.send(lista);
+});
+
+app.get('/iniciarPartida/:nick/:codigo', function(request,response){
+	var nick=request.params.nick;
+	var codigo=request.params.codigo;
+	var res=juego.iniciarPartida(codigo,nick);
+	response.send({"res":res});
+});
+
 server.listen(app.get('port'), function () {
     console.log('Node esta escuchando en el puerto', app.get('port'));
 });

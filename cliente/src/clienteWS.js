@@ -1,7 +1,7 @@
 function ClienteWS(){
-	this.socket;
-	this.nick;
-	this.codigo;
+	this.socket=undefined;
+	this.nick=undefined;
+	this.codigo=undefined;
 	this.crearPartida=function(nick,numero){
 		this.nick=nick;
 		this.socket.emit("crearPartida",nick,numero);
@@ -11,7 +11,7 @@ function ClienteWS(){
 		this.socket.emit("unirAPartida",nick,codigo);
 	}
 	this.inicarPartida=function(nick,codigo){
-		this.socket.emit("iniciarPartida",nick,codigo);
+		this.socket.emit("iniciarPartida",this.nick,this.codigo);
 	}
 
 	this.listaPartidasDisponibles=function(){
@@ -38,6 +38,7 @@ function ClienteWS(){
 			});
 			this.socket.on('nuevoJugador',function(nick){
 				console.log(nick+"se une a la partida");
+				//cli.iniciarPartida();
 			});
 			this.socket.on('partidaIniciada',function(fase){
 				console.log(fase);
@@ -59,5 +60,7 @@ function pruebasWS(){
 	w2.unirAPartida("Juani",codigo);
 	w3.unirAPartida("Juan",codigo);
 	w4.unirAPartida("Juanita",codigo);
+
+	//ws.inicarPartida();
 
 }

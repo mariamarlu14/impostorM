@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mariamarlu14/impostor.git"
+    "url": "git+https://github.com/mariamarlu14/impostorM.git"
   },
   "keywords": [
     "juego"
@@ -16,9 +16,9 @@
   "author": "MML",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mariamarlu14/impostor/issues"
+    "url": "https://github.com/mariamarlu14/impostorM/issues"
   },
-  "homepage": "https://github.com/mariamarlu14/impostor#readme",
+  "homepage": "https://github.com/mariamarlu14/impostorM#readme",
   "dependencies": {
     "express": "^4.17.1",
     "jasmine-node": "^3.0.0",
