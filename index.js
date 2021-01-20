@@ -6,13 +6,15 @@ var bodyParser = require("body-parser");
 var io = require('socket.io').listen(server);
 var modelo=require("./servidor/modelo.js");
 var wss=require("./servidor/servidorWS.js");
+var servidorWS=new wss.ServidorWS();
+
+
 app.set('port', process.env.PORT || 5000);
 
 app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var servidorWS=new wss.ServidorWS();
 
 var juego=new modelo.Juego();
 
@@ -32,7 +34,7 @@ app.get('/nuevoUsuario/:nick', function(request,response){
 
 app.get('/crearPartida/:nick/:numero', function(request,response){
 	var nick=request.params.nick;
-	var usr=new modelo.Usuario(nick);
+	//var usr=new modelo.Usuario(nick);
 	var num=parseInt(request.params.numero);
 	var codigo=juego.crearPartida(num,nick);
 

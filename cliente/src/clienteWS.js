@@ -17,6 +17,21 @@ function ClienteWS(){
 	this.listaPartidasDisponibles=function(){
 		this.socket.emit("listaPartidas");
 	}
+	this.listaPartidas=function(){
+		this.socket.emit("listaPartidas");
+	}
+	this.lanzarVotacion=function(){
+		this.socket.emit("lanzarVotacion",this.nick,this.codigo);
+	}
+	this.votar=function(sospechoso){
+		this.socket.emit("saltarVoto",this.nick,this.codigo,sospechoso);
+
+	}
+	this.obtenerEncargo=function(){
+		this.socket.emit("obtenerEncargo",this.nick,this.codigo);
+	}
+	this.saltarVoto=function(){
+
 	this.ini=function(){
 		this.socket=io.connect();
 		this.lanzarSocketSrv();
@@ -45,6 +60,21 @@ function ClienteWS(){
 			});
 			this.socket.on('recibirListaPartidasDisponibles',function(lista){
 				console.log(lista);
+			});
+			this.socket.on('recibirListaPartidas',function(lista){
+				console.log(lista);
+			});
+			this.socket.on("votacion",function(data){
+				console.log(data);
+			});
+			this.socket.on("finalVotacion",function(data){
+				console.log(data);
+			});
+			this.socket.on("haVotado",function(data){
+				console.log(data);
+			});
+			this.socket.on("recibirEncargo",function(data){
+				console.log(data);
 			});
 	}
 	this.ini();
