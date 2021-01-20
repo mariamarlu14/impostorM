@@ -31,6 +31,12 @@ function ClienteWS(){
 		this.socket.emit("obtenerEncargo",this.nick,this.codigo);
 	}
 	this.saltarVoto=function(){
+		this.socket.emit("saltarVoto",this.nick,this.codigo);
+	}
+	this.atacar=function(inocente){
+		this.socket.emit("atacar",this.nick,this.codigo,inocente);
+	}
+
 
 	this.ini=function(){
 		this.socket=io.connect();
@@ -74,6 +80,9 @@ function ClienteWS(){
 				console.log(data);
 			});
 			this.socket.on("recibirEncargo",function(data){
+				console.log(data);
+			});
+			this.socket.on("atacar",function(data){
 				console.log(data);
 			});
 	}

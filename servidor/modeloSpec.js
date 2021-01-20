@@ -142,7 +142,7 @@ describe("El juego del impostor", function() {
   			expect(partida.fase.nombre).toEqual("votacion");
   			juego.votar("tomas",codigo,"isa");
   			expect(partida.usuarios["tomas"].estado.nombre).toEqual("muerto");
-  			expect(partida.fase.nombre).toEqual("tomas");
+  			//expect(partida.fase.nombre).toEqual("tomas");
   			expect(partida.fase.nombre).toEqual("jugando");
   		});
 
@@ -165,6 +165,23 @@ describe("El juego del impostor", function() {
   			juego.votar("tomas",codigo,nick);
   			expect(partida.usuarios[nick].estado.nombre).toEqual("muerto");
   			expect(partida.fase.nombre).toEqual("final");
+  		});
+  		it("imposotor ataca ya todos, y gana", function(){
+  			var partida=juego.partidas[codigo];
+  			juego.lanzarVotacion(nick,codigo);
+  			
+  			partida.usuarios[nick].impostor=true;
+  			partida.usuarios["ana"].impostor=false;
+  			partida.usuarios["isa"].impostor=false;
+  			partida.usuarios["tomas"].impostor=false;
+
+  			juego.atacar(nick,codigo,"ana");
+  			expect(partida.usuario["ana"].estado.nombre).toEqual("muerto");
+  			expect(partida.fase.nombre).toEqual("jugando");
+  			juego.atacar(nick,codigo,"isa");
+  			expect(partida.usuario["isa"].estado.nombre).toEqual("muerto");
+  			expect(partida.fase.nombre).toEqual("final");
+
   		});
   	})
    });

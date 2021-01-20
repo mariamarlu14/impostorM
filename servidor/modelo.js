@@ -79,7 +79,7 @@ function Juego(){
 		var res={};
 		var encargo=juego.partidas[codigo].usuarios[nick].encargo;
 		var impostor=juego.partidas[codigo].usuarios[nick].impostor;
-		res={"encargo":encargo,"impostor":impostor};
+		res={"nick":nick,"encargo":encargo,"impostor":impostor};
 		return res;
 	}
 
@@ -248,7 +248,7 @@ function Partida(num,owner,codigo,juego){
 	}
 	this.finalVotacion=function(){
 		this.fase=new Jugando();
-		this.reiniciarContadoresVotaciones();//hVotado,skip,elegido
+		//this.reiniciarContadoresVotaciones();//hVotado,skip,elegido
 		this.comprobarFinal();
 	}
 	this.reiniciarContadoresVotaciones=function(){
@@ -274,6 +274,7 @@ function Partida(num,owner,codigo,juego){
 		this.fase.lanzarVotacion(this);
 	}
 	this.puedeLanzarVotacion=function(){
+		this.reiniciarContadoresVotaciones();
 		this.fase=new Votacion();
 	}
 	this.agregarUsuario(owner);

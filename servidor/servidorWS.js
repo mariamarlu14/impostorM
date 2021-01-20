@@ -37,7 +37,7 @@ function ServidorWS(){
 
 		    });
 		    socket.on('iniciarPartida',function(nick,codigo){
-				//cli.enviarATodosr(socket,codigo,"partidaIniciada",fase);	
+				//cli.enviarATodos(socket,codigo,"partidaIniciada",fase);	
 				juego.iniciarPartida(nick,codigo);
 				var fase=juego.partidas[codigo].fase.nombre;
 				cli.enviarATodos(io,codigo,"partidaIniciada",fase);
@@ -88,6 +88,16 @@ function ServidorWS(){
 
 
 		    });
+		     socket.on("atacar",function(nick,codigo,inocente){
+		     	juego.atacar(nick,codigo,inocente);
+		     	var partida=juego.partidas[codigo];
+		     	var fase=partida.fase.nombre;
+		     	if(fase=="final"){
+		     		cli.enviarATodos(io,codigo,"final","ganan impostores");
+		     	}else{
+		     		cli.enviarRemitente(socket,"muereInocente",fase);
+		     	}
+		     })
 
 
 		});
