@@ -38,29 +38,30 @@ function Juego(){
 	this.listaPartidasDisponibles=function(){
 		var lista=[];
 		var huecos=0;
-		for(var key in this.partidas){
+		for (var key in this.partidas){
 			var partida=this.partidas[key];
 			huecos=partida.obtenerHuecos();
-			if(huecos>0 && !(partida.fase.nombre=="jugando")){
-
-		     lista.push({"codigo":key,"huecos":huecos})
+			if (huecos>0)
+			{
+			  lista.push({"codigo":key,"huecos":huecos});
 			}
 		}
 		return lista;
 	}
-	this.listaPartida=function(){
+	this.listaPartidas=function(){
 		var lista=[];
-		for(var key in this.partidas){
+		for (var key in this.partidas){
 			var partida=this.partidas[key];
 			var owner=partida.nickOwner;
-			lista.push({"codigo":key, "owner":owner});
+			 lista.push({"codigo":key,"owner":owner});
 		}
 		return lista;
 	}
+
 	this.iniciarPartida=function(nick,codigo){
-			var owner=this.partidas[codigo].nickOwner;
-			if(nick==owner){
-				this.partidas[codigo].iniciarPartida();
+		var owner=this.partidas[codigo].nickOwner;
+		if (nick==owner){
+			this.partidas[codigo].iniciarPartida();
 		}
 	}
 	this.lanzarVotacion=function(nick,codigo){
@@ -72,27 +73,31 @@ function Juego(){
 		usr.saltarVoto();
 	}
 	this.votar=function(nick,codigo,sospechoso){
-		//var usr=this.partidas[codigo].usuarios[nick];
-		//usr.votar(sospechoso);
+		var usr=this.partidas[codigo].usuarios[nick];
+		//usr=this.partidas[codigo].obtenerUsuario(nick)
+		usr.votar(sospechoso);
 	}
 	this.obtenerEncargo=function(nick,codigo){
 		var res={};
-		var encargo=juego.partidas[codigo].usuarios[nick].encargo;
-		var impostor=juego.partidas[codigo].usuarios[nick].impostor;
+		var encargo=this.partidas[codigo].usuarios[nick].encargo;
+		var impostor=this.partidas[codigo].usuarios[nick].impostor;
 		res={"nick":nick,"encargo":encargo,"impostor":impostor};
+
 		return res;
 	}
-
+	this.atacar=function(nick,codigo,inocente){
+		var usr=this.partidas[codigo].usuarios[nick];
+		usr.atacar(inocente);
+	}
 }
-
 
 function Partida(num,owner,codigo,juego){
 	this.maximo=num;
 	this.nickOwner=owner;
 	this.codigo=codigo;
+	this.juego=juego;
 	this.fase=new Inicial();
 	this.usuarios={};
-	this.juego=juego;
 	this.elegido="no hay nadie elegido";
 	this.encargos=["jardines","mobiliario","basuras","calles"];
 	this.agregarUsuario=function(nick){
@@ -138,7 +143,7 @@ function Partida(num,owner,codigo,juego){
 		if (!this.comprobarMinimo()){
 			this.fase=new Inicial();
 		}
-		if(this.numeroJugadores()<=0){
+		if (this.numeroJugadores()<=0){
 			this.juego.eliminarPartida(this.codigo);
 		}
 	}
@@ -163,7 +168,7 @@ function Partida(num,owner,codigo,juego){
 	}
 	this.puedeAtacar=function(inocente){
 		this.usuarios[inocente].esAtacado();
-		this.comprobarFinal();
+		//this.comprobarFinal();
 	}
 	this.numeroImpostoresVivos=function(){
 		let cont=0;
@@ -190,22 +195,23 @@ function Partida(num,owner,codigo,juego){
 		return (this.numeroImpostoresVivos()==0);
 	}
 	this.votar=function(sospechoso){
-		this.fase.votar(sospechoso,this);
+		this.fase.votar(sospechoso,this)
 	}
 	this.puedeVotar=function(sospechoso){
 		this.usuarios[sospechoso].esVotado();
 		this.comprobarVotacion();
 	}
 	this.masVotado=function(){
-		let votado="no hay nadie más votado";
-		let max=0;
+		let votado="no hay nadie mas votado";
+		let max=1;
 		for (var key in this.usuarios) {
 			if (max<this.usuarios[key].votos){
 				max=this.usuarios[key].votos;
 				votado=this.usuarios[key];
 			}
 		}
-		//comprobar que solo hay uno
+		//comprobar que solo hay 1 más votado
+
 		return votado;
 	}
 	this.numeroSkips=function(){
@@ -220,23 +226,24 @@ function Partida(num,owner,codigo,juego){
 	this.todosHanVotado=function(){
 		let res=true;
 		for (var key in this.usuarios) {
-			if (this.usuarios[key].estado.nombre=="vivo" && this.usuarios[key].haVotado){
+			if (this.usuarios[key].estado.nombre=="vivo" && !this.usuarios[key].haVotado){
 				res=false;
+				break;
 			}
 		}
-		return cont;
+		return res;
 	}
 	this.listaHanVotado=function(){
 		var lista=[];
 		for (var key in this.usuarios) {
 			if (this.usuarios[key].estado.nombre=="vivo" && this.usuarios[key].haVotado){
-				lista.push(key);		
+				lista.push(key);
 			}
-		}return lista;
-
+		}
+		return lista;
 	}
 	this.comprobarVotacion=function(){
-		if(this.todosHanVotado()){
+		if (this.todosHanVotado()){
 			let elegido=this.masVotado();
 			if (elegido && elegido.votos>this.numeroSkips()){
 				elegido.esAtacado();
@@ -244,17 +251,16 @@ function Partida(num,owner,codigo,juego){
 			}
 			this.finalVotacion();
 		}
-		
 	}
 	this.finalVotacion=function(){
 		this.fase=new Jugando();
-		//this.reiniciarContadoresVotaciones();//hVotado,skip,elegido
+		//this.reiniciarContadoresVotaciones(); 
 		this.comprobarFinal();
 	}
 	this.reiniciarContadoresVotaciones=function(){
 		this.elegido="no hay nadie elegido";
 		for (var key in this.usuarios) {
-			if (this.usuarios[key].estado.nombre=="vivo" ){
+			if (this.usuarios[key].estado.nombre=="vivo"){
 				this.usuarios[key].reiniciarContadoresVotaciones();
 			}
 		}
@@ -343,6 +349,7 @@ function Jugando(){
 	this.lanzarVotacion=function(partida){
 		partida.puedeLanzarVotacion();
 	}
+	this.votar=function(sospechoso,partida){}
 }
 
 function Votacion(){
@@ -358,7 +365,7 @@ function Votacion(){
 }
 
 function Final(){
-	this.final="final";
+	this.nombre="final";
 	this.agregarUsuario=function(nick,partida){
 		console.log("La partida ha terminado");
 	}
@@ -391,7 +398,7 @@ function Usuario(nick){
 		}
 	}
 	this.atacar=function(inocente){
-		if (this.impostor){
+		if (this.impostor && !(this.nick==inocente)){
 			this.partida.atacar(inocente);
 		}
 	}
@@ -428,6 +435,7 @@ function Vivo(){
 	this.nombre="vivo";
 	this.esAtacado=function(usr){
 		usr.estado=new Muerto();
+		usr.partida.comprobarFinal();
 	}
 	this.lanzarVotacion=function(usr){
 		usr.puedeLanzarVotacion();
@@ -453,10 +461,10 @@ function randomInt(low, high) {
 // 		juego.unirAPartida(codigo,"luisa");
 // 		juego.unirAPartida(codigo,"luisito");
 // 		//juego.unirAPartida(codigo,"pepe2");
-
+	
 // 		usr.iniciarPartida();
 // 	}
 // }
 
 module.exports.Juego=Juego;
-module.exports.Usuario=Usuario; 
+module.exports.Usuario=Usuario;
