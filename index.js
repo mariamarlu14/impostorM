@@ -20,10 +20,14 @@ var juego=new modelo.Juego();
 
 app.get('/', function (request, response) {
     var contenido = fs.readFileSync(__dirname + "/cliente/index.html"); 
-    
     response.setHeader("Content-type", "text/html");
-    response.send(contenido);
-    
+    response.send(contenido);    
+});
+
+app.get('/game', function (request, response) {
+    var contenido = fs.readFileSync(__dirname + "/cliente/index-game.html");    
+    response.setHeader("Content-type", "text/html");
+    response.send(contenido);  
 });
 
 app.get('/nuevoUsuario/:nick', function(request,response){
