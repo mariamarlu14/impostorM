@@ -3,6 +3,7 @@ function ClienteWS(){
 	this.nick=undefined;
 	this.codigo=undefined;
 	this.owner=false;
+	this.numJugador=undefined;
 	this.ini=function(){
 		this.socket=io.connect();
 		this.lanzarSocketSrv();
@@ -24,6 +25,9 @@ function ClienteWS(){
 	this.listaPartidas=function(){
 		this.socket.emit("listaPartidas");
 	}
+	this.estoyDentro=function(){
+		this.socket.emit("estoyDentro",this.nick,this.codigo);
+	}
 	this.lanzarVotacion=function(){
 		this.socket.emit("lanzarVotacion",this.nick,this.codigo);
 	}
@@ -39,6 +43,9 @@ function ClienteWS(){
 	this.atacar=function(inocente){
 		this.socket.emit("atacar",this.nick,this.codigo,inocente);
 	}
+	this.movimiento=function(direccion){
+		this.socket.emit("movimiento",this.nick,this.codigo,this.numJugador,direccion);
+	}
 
 	//servidor WS dentro del cliente
 	this.lanzarSocketSrv=function(){
@@ -51,12 +58,14 @@ function ClienteWS(){
 			console.log(data);
 			if (data.codigo!="fallo"){
 				cli.owner=true;
+				cli.numJugador=0;
 				cw.mostrarEsperandoRival();
 			}
 		});
 		this.socket.on('unidoAPartida',function(data){
 			cli.codigo=data.codigo;
 			cli.nick=data.nick;
+			cli.numJugador=data.numJugador;
 			console.log(data);
 			cw.mostrarEsperandoRival();
 		});
@@ -67,18 +76,33 @@ function ClienteWS(){
 		});
 		this.socket.on('partidaIniciada',function(fase){
 			console.log("Partida en fase: "+fase);
-			cli.obtenerEncargo();
-			cw.limpiar();
-			lanzarJuego();
+			if (fase=="jugando"){
+				cli.obtenerEncargo();
+				cw.limpiar();
+				lanzarJuego();
+			}
 		});
 		this.socket.on('recibirListaPartidasDisponibles',function(lista){
 			console.log(lista);
 			//cw.mostrarUnirAPartida(lista);
-			cw.mostrarListaPartidas(lista);
+			if (!cli.codigo){
+				cw.mostrarListaPartidas(lista);
+			}
 		});
 		this.socket.on('recibirListaPartidas',function(lista){
 			console.log(lista);
 		});
+		this.socket.on('dibujarRemoto',function(lista){
+			console.log(lista);
+			for(var i=0;i<lista.length;i++){
+				if (lista[i].nick!=cli.nick){
+					lanzarJugadorRemoto(lista[i].nick,lista[i].numJugador);
+				}
+			}
+		});
+		this.socket.on("moverRemoto",function(datos){
+			moverRemoto(datos.direccion,datos.nick,datos.numJugador);
+		})
 		this.socket.on("votacion",function(data){
 			console.log(data);
 		});
