@@ -65,9 +65,9 @@ function ServidorWS(){
 				cli.enviarRemitente(socket,"dibujarRemoto",lista);
 		    });
 
-		    socket.on('movimiento',function(nick,codigo,numJugador,direccion){
-		    	var datos={nick:nick,numJugador:numJugador,direccion:direccion};
-		    	cli.enviarATodosMenosRemitente(socket,codigo,"moverRemoto",datos);
+		    socket.on('movimiento',function(datos){
+		    	//var datos={nick:nick,numJugador:numJugador,direccion:direccion,x:x,y:y};
+		    	cli.enviarATodosMenosRemitente(socket,datos.codigo,"moverRemoto",datos);
 		    });
 
 		    socket.on("lanzarVotacion",function(nick,codigo){
