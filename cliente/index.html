@@ -1,70 +1,116 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Impostor</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">               
-	<link rel="stylesheet" href="cliente/lib/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="cliente/lib/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
-	<script src="cliente/src/clienteRest.js"></script>
-	<script src="cliente/src/clienteWS.js"></script>
-	<script src="cliente/src/controlWeb.js"></script>
-	<script src="cliente/src/game.js"></script>
-	<style>
-		.list-group{
-		    max-height: 300px;
-		    margin-bottom: 10px;
-		    overflow-y:scroll;
-		    -webkit-overflow-scrolling: touch;
-		}
-	</style>
+
+    <title>Impostor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="cliente/lib/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="cliente/lib/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+    <script src="cliente/src/clienteRest.js"></script>
+    <script src="cliente/src/clienteWS.js"></script>
+    <script src="cliente/src/controlWeb.js"></script>
+    <script src="cliente/src/game.js"></script>
+    <style>
+        .list-group {
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+
+    <link rel="icon" type="image/png" href="cliente/img/maquina.png">
+
 </head>
+
 <body>
-	<div class="container">
-		<h3>Impostor App</h3>
-		<div class="row">
-	    <div class="col-sm-6">
-	      	<div id="crearPartida"></div>
-  		    <div id="esperando"></div>
-	    </div>
-	    <div class="col-sm-6">
-	      <div id="listaPartidas"></div>
-		  <div id="listaEsperando"></div>
-	    </div>
-	    <div class="col-sm-6">
-	      <div id="botones"></div>
-		</div>
-	    <div class="row">
-	    	<div id="game-container"></div>
-	    </div>
-	    <div class="modal" id="modalGeneral" tabindex="-1" role="dialog">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">ImpostorApp</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="jumbotron text-center " style="background-color:#FFFFFF">
+        <h1 style="color:#CE50E4; text-decoration: underline; font-family: cursive;">Impostor App</h1>
+
+
+
+
+    </div>
+    <div class="container" style="background-color:#E1FFF6">
+
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 offset-md-4"></div>
+        </div>
+
+
+
+        <div class="col-sm-6">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div id="crearPartida"></div>
+                        <div id="esperando"></div>
+                        <div id="listaPartidas"></div>
+                        <div id="listaEsperando"></div>
+                        <div class="row">
+                            <br>
+                            <div id="game-container"></div>
+
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <div id="mostrarImagen"></div>
+                        <img src="cliente/img/maquina.png" class="img-responsive">
+                        <br>
+
+                        <button data-toggle="collapse" class="btn btn-info" data-target="#demo">Intrucciones</button>
+                        <div id="demo" class="collapse">
+                            <p>Letra A para matar a los contrincantes</p>
+                            <p>Letra T para hacer las tareas</p>
+                            <p>Letra V para hacer las votaciones</p>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <br>
+                        <div id="botones"></div>
+                    </div>
+
+
+                    <div class="modal" id="modalGeneral" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">ImpostorApp</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
-		      </div>
-		      <div class="modal-body" id="contenidoModal">
-		      </div>
-		      <div class="modal-footer" id="pie">
-		        <!--<button type="button" class="btn btn-primary">Save changes</button>-->		        
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	  </div>
-	</div>
-	</div>
-<script>
-	var rest=new ClienteRest();
-	var ws=new ClienteWS();
-	var cw=new ControlWeb($);
-	cw.mostrarCrearPartida(4);
-	ws.listaPartidasDisponibles();
-</script>
+                                </div>
+                                <div class="modal-body" id="contenidoModal">
+                                </div>
+                                <div class="modal-footer" id="pie">
+                                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <script>
+        var rest = new ClienteRest();
+        var ws = new ClienteWS();
+        var cw = new ControlWeb($);
+        cw.mostrarCrearPartida(4);
+        ws.listaPartidasDisponibles();
+    </script>
 </body>
+
 </html>
