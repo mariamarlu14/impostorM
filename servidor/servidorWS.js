@@ -55,6 +55,18 @@ function ServidorWS(){
 		    	cli.enviarRemitente(socket,"recibirListaPartidas",lista);
 		    });
 
+		    socket.on('abandonarPartida',function(nick,codigo){
+		    	var partida=juego.partidas[codigo];
+		    	juego.abandonarPartida(nick,codigo);
+		    	var fase=partida.fase.nombre;
+		    	cli.enviarATodos(io,codigo,"jugadorAbandona",nick);
+		    	if(fase!="jugando"){
+		    		cli.enviarATodos(io,codigo,"final","abandono");
+		    	}else{
+		    		socket.leave(codigo);
+		    	}
+		    })
+
 		    socket.on('estoyDentro',function(nick,codigo){
 		    	//var usr=juego.obtenerJugador(nick,codigo);
 		  //   	var numero=juego.partidas[codigo].usuarios[nick].numJugador;

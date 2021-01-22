@@ -1,12 +1,16 @@
-function Juego(min){
+var cad=require('./cad.js');
+
+function Juego(min,test){
 	this.min=min;
 	this.partidas={};
+	this.cad=new cad.Cad();
 	this.crearPartida=function(num,owner){
 		let codigo="fallo";
 		if (!this.partidas[codigo] && this.numeroValido(num)){
 			codigo=this.obtenerCodigo();
 			this.partidas[codigo]=new Partida(num,owner,codigo,this);
-			//owner.partida=this.partidas[codigo];
+			var fase=this.partidas[codigo].fase.nombre;
+			this.insertarPartida({"codigo":codigo, "nick":owner, "numeroJugadores":num, "fase":fase});
 		}
 		else{
 			console.log(codigo);
@@ -99,6 +103,29 @@ function Juego(min){
 	this.realizarTarea=function(nick,codigo){
 		this.partidas[codigo].realizarTarea(nick);
 	}
+	this.partidasCreadas=function(admin,callback){
+		if(admin=="1234"){
+			this.cad.obtenerPartidaCriterio({fase:"inicial"},function(lista){
+				if(lista){
+					callback(lista);
+				}else{
+					callback([]);
+				}
+			});
+		}
+	}
+	this.insertarPartida=function(log){
+		if(test=="noTest"){
+			this.card.insertarPartida(log,function(res){})
+		}
+	}
+	if(test=="noTest"){
+		this.cad.connect(function(db){
+			console.log("conectado a Atlas");
+		})	
+	}
+	
+
 }
 
 function Partida(num,owner,codigo,juego){
@@ -328,6 +355,9 @@ function Partida(num,owner,codigo,juego){
 	this.finPartida=function(){
 		console.log("partida "+this.codigo+" estado "+this.fase.nombre);
 		this.fase=new Final();
+		var fase=this.fase.nombre;
+		this.juego.insertarPartida({"codigo":codigo, "nick":owner, "numeroJugadores":num, "fase":fase});
+
 	}
 	this.lanzarVotacion=function(){
 		this.fase.lanzarVotacion(this);
