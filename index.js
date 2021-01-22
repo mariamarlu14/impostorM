@@ -11,14 +11,15 @@ var wss=require("./servidor/servidorWS.js");
 var servidorWS=new wss.ServidorWS();
 
 var min = process.argv.slice(2);
+var test = process.argv.slice(3);
 
 app.set('port', process.env.PORT || 5000);
+var juego=new modelo.Juego(min,test);
 
 app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-var juego=new modelo.Juego(min);
 
 app.get('/', function (request, response) {
     var contenido = fs.readFileSync(__dirname + "/cliente/index.html");   
@@ -32,7 +33,7 @@ app.get('/game', function (request, response) {
     response.send(contenido); 
 });
 
-app.get("/crearPartida/:nick/:num",function(request,response){
+/*app.get("/crearPartida/:nick/:num",function(request,response){
 	var nick=request.params.nick;
 	var num=parseInt(request.params.num);
 	//ojo, nick nulo o numero nulo
@@ -49,11 +50,19 @@ app.get("/unirAPartida/:nick/:codigo",function(request,response){
 	var res=juego.unirAPartida(codigo,nick);
 	response.send({"res":res});
 });
-
+*/
 app.get("/listaPartidas",function(request,response){
 	var lista=juego.listaPartidas();
 	response.send(lista);
 });
+
+app.get("/partidasCreadas/:admin",function(request,response){
+	var admin=request.params.admin;
+	juego.partidasCreadas(admin,function(lista){
+		response.send(lista);
+	});
+});
+//app.get("/partidasFinalizadas/:admin")
 
 server.listen(app.get('port'), function () {
     console.log('Node esta escuchando en el puerto', app.get('port'));
