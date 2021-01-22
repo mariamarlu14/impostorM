@@ -99,6 +99,16 @@ function Juego(min){
 	this.realizarTarea=function(nick,codigo){
 		this.partidas[codigo].realizarTarea(nick);
 	}
+	/*this.abandonarPartida = function(nick, codigo) {
+        var usr=this.partidas[codigo].usuarios[nick];
+		usr.abandonarPartida();
+    }*/
+    this.abandonarPartida = function(nick, codigo) {
+        let partida = this.partidas[codigo];
+        if(partida) {
+            return partida.usuarios[nick].abandonarPartida();
+        }
+    }
 }
 
 function Partida(num,owner,codigo,juego){
@@ -110,6 +120,7 @@ function Partida(num,owner,codigo,juego){
 	this.usuarios={};
 	this.elegido="no hay nadie elegido";
 	this.encargos=["jardines","mobiliario","basuras","calles"];
+
 	this.agregarUsuario=function(nick){
 		return this.fase.agregarUsuario(nick,this)
 	}
@@ -170,16 +181,30 @@ function Partida(num,owner,codigo,juego){
 		console.log("partida "+this.codigo+" estado "+this.fase.nombre);		
 	}
 	this.abandonarPartida=function(nick){
-		this.fase.abandonarPartida(nick,this);
+		return this.fase.abandonarPartida(nick,this);
 	}
 	this.puedeAbandonarPartida=function(nick){
 		this.eliminarUsuario(nick);
-		if (!this.comprobarMinimo()){
-			this.fase=new Inicial();
-		}
-		if (this.numeroJugadores()<=0){
-			this.juego.eliminarPartida(this.codigo);
-		}
+		if(!this.comprobarMinimo() && this.fase.esCompletado()) {
+            this.fase = new Inicial();
+        }
+
+        // comprobar si no quedan usuarios, eliminar partida
+        if(this.numJugadores <= 0) {
+            this.terminarPartida();
+        }
+
+        // Si abandona el propietario se termina la partida (fase final)
+        if(this.nickOwner == nick) {
+            this.terminarPartida();
+        }
+
+        // Si estamos jugando, comprobar si termina la partida
+        if(this.fase.esJugando()) {
+            resultado = this.comprobarFinal();
+            finalPartida = resultado.finalPartida;
+            mensaje = resultado.mensaje;
+        }
 	}
 	this.eliminarUsuario=function(nick){
 		delete this.usuarios[nick];
@@ -360,6 +385,12 @@ function Partida(num,owner,codigo,juego){
 	this.obtenerPercentTarea=function(nick){
 		return this.usuarios[nick].obtenerPercentTarea();
 	}
+
+    this.terminarPartida = function() {
+        this.fase = new Final();
+        console.log("La partida ha terminado.");
+    }
+
 	this.obtenerPercentGlobal=function(){
 		var total=0;
 		for(var key in this.usuarios){
@@ -386,13 +417,31 @@ function Inicial(){
 		console.log("Faltan jugadores");
 	}
 	this.abandonarPartida=function(nick,partida){
-		partida.puedeAbandonarPartida(nick);
+		return partida.puedeAbandonarPartida(nick);
 		//partida.eliminarUsuario(nick);
 		//comprobar si no quedan usr
 	}
 	this.atacar=function(inocente){}
 	this.lanzarVotacion=function(){}
 	this.realizarTarea=function(){}
+
+	this.esInicial = function() {
+        return true;
+    }
+
+    this.esCompletado = function() {
+        return false;
+    }
+	 this.esJugando = function() {
+        return false;
+    }
+    this.esVotando = function() {
+        return false;
+    }
+
+    this.esFinal = function() {
+        return false;
+    }
 }
 
 function Completado(){
@@ -412,14 +461,31 @@ function Completado(){
 		}
 	}
 	this.abandonarPartida=function(nick,partida){
-		partida.eliminarUsuario(nick);
-		if (!partida.comprobarMinimo()){
-			partida.fase=new Inicial();
-		}
+		return partida.puedeAbandonarPartida(nick);
+
 	}
 	this.atacar=function(inocente){}
 	this.lanzarVotacion=function(){}
 	this.realizarTarea=function(){}
+
+	this.esInicial = function() {
+        return false;
+    }
+
+    this.esCompletado = function() {
+        return true;
+    }
+
+    this.esJugando = function() {
+        return false;
+    }
+    this.esVotando = function() {
+        return false;
+    }
+
+    this.esFinal = function() {
+        return false;
+    }
 }
 
 function Jugando(){
@@ -430,8 +496,8 @@ function Jugando(){
 	this.iniciarPartida=function(partida){
 	}
 	this.abandonarPartida=function(nick,partida){
-		partida.eliminarUsuario(nick);
-		//comprobar si termina la partida
+		return partida.puedeAbandonarPartida(nick);
+			
 	}
 	this.atacar=function(inocente,partida){
 		partida.puedeAtacar(inocente);
@@ -443,6 +509,25 @@ function Jugando(){
 	this.realizarTarea=function(nick,partida){
 		partida.puedeRealizarTarea(nick);
 	}
+	this.esInicial = function() {
+        return false;
+    }
+
+    this.esCompletado = function() {
+        return false;
+    }
+
+    this.esJugando = function() {
+        return true;
+    }
+
+    this.esVotando = function() {
+        return false;
+    }
+
+    this.esFinal = function() {
+        return false;
+    }
 }
 
 function Votacion(){
@@ -456,6 +541,26 @@ function Votacion(){
 		partida.puedeVotar(sospechoso);
 	}
 	this.realizarTarea=function(){}
+	this.esInicial = function() {
+        return false;
+    }
+
+    this.esCompletado = function() {
+        return false;
+    }
+
+    this.esJugando = function() {
+        return false;
+    }
+
+    this.esVotando = function() {
+        return true;
+    }
+
+    this.esFinal = function() {
+        return false;
+    }
+
 }
 
 function Final(){
@@ -465,12 +570,32 @@ function Final(){
 	}
 	this.iniciarPartida=function(partida){
 	}
-	this.abandonarPartida=function(nick,partida){
+	/*this.abandonarPartida=function(nick,partida){
 		//esto es absurdo (salvo para Javier)
-	}
+	}*/
 	this.atacar=function(inocente){}
 	this.lanzarVotacion=function(){}
 	this.realizarTarea=function(){}
+	this.esInicial = function() {
+        return false;
+    }
+
+    this.esCompletado = function() {
+        return false;
+    }
+
+    this.esJugando = function() {
+        return false;
+    }
+
+    this.esVotando = function() {
+        return false;
+    }
+
+    this.esFinal = function() {
+        return true;
+    }
+
 }
 
 function Usuario(nick){
@@ -499,10 +624,10 @@ function Usuario(nick){
 		this.realizado=this.maxTarea;
 	}
 	this.abandonarPartida=function(){
-		this.partida.abandonarPartida(this.nick);
-		if (this.partida.numeroJugadores()<=0){
+		return this.partida.abandonarPartida(this.nick);
+		/*if (this.partida.numeroJugadores()<=0){
 			console.log(this.nick," era el último jugador");
-		}
+		}*/
 	}
 	this.atacar=function(inocente){
 		if (this.impostor && !(this.nick==inocente)){

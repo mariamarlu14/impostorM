@@ -53,6 +53,9 @@ function ClienteWS(){
 	this.realizarTarea=function(){
 		this.socket.emit("realizarTarea",this.nick,this.codigo);
 	}
+	this.abandonarPartida=function(){
+		this.socket.emit("abandonarPartida",this.nick,this.codigo);
+	}
 
 	//servidor WS dentro del cliente
 	this.lanzarSocketSrv=function(){
@@ -68,6 +71,8 @@ function ClienteWS(){
 				cli.numJugador=0;
 				cli.estado="vivo";
 				cw.mostrarEsperandoRival();
+				cw.mostrarAbandonarPartida();
+
 			}
 		});
 		this.socket.on('unidoAPartida',function(data){
@@ -77,6 +82,8 @@ function ClienteWS(){
 			cli.estado="vivo";
 			console.log(data);
 			cw.mostrarEsperandoRival();
+			cw.mostrarAbandonarPartida();
+
 		});
 		this.socket.on('nuevoJugador',function(lista){
 			//console.log(nick+" se une a la partida");

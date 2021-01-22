@@ -127,6 +127,17 @@ function ServidorWS(){
 			    	cli.enviarATodos(io, codigo, "final","ganan ciudadanos");
 			    }
 		    });
+		     socket.on("abandonarPartida",function(nick,codigo){
+		    	var partida=juego.partidas[codigo];
+		    	juego.abandonarPartida(nick,codigo);
+		    	var fase=partida.fase.nombre;
+		    	cli.enviarATodos(io,codigo,"jugadorAbandona",nick);
+		    	if(fase!="jugando"){
+		    		cli.enviarATodos(io,codigo,"final","abandono");
+		    	}else{
+		    		socket.leave(codigo);
+		    	}
+		    })
 		});
 	}
 	

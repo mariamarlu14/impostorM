@@ -162,6 +162,19 @@ function ControlWeb($){
 	    });
 
 	}
+	this.mostrarAbandonarPartida = function() {
+        $('#btnAbandonar').remove();
+
+        var cadena = '<button type="button" class="btn btn-danger" id="btnAbandonar">Abandonar</button>';
+
+        $('#botones').append(cadena);
+
+        $('#btnAbandonar').on('click', function() {
+            $('#mER').remove();
+            //$('#nuevosJugadores').remove();
+            ws.abandonarPartida();
+        });
+    }
 
 	this.limpiarModal=function(){
 		$('#avisarImpostor').remove();
@@ -169,6 +182,7 @@ function ControlWeb($){
 		$('#cerrar').remove();
 		$('#votacion').remove();
 		$('#votar').remove();
+
 	}
 
 }
