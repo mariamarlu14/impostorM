@@ -38,11 +38,12 @@ function ServidorWS(){
 		    });
 
 		    socket.on('iniciarPartida',function(nick,codigo){
-		      	juego.iniciarPartida(nick,codigo);
+		    	//iniciar partida ToDo
+		    	//controlar si nick es el owner
+		    	//cli.enviarATodos(socket,codigo,"partidaIniciada",fase);
+		    	juego.iniciarPartida(nick,codigo);
 		    	var fase=juego.partidas[codigo].fase.nombre;
-		    	if (fase=="jugando"){
-			    	cli.enviarATodos(io, codigo, "partidaIniciada",fase);
-			    }
+		    	cli.enviarATodos(io, codigo, "partidaIniciada",fase);
 		    });
 
 		    socket.on('listaPartidasDisponibles',function(){
@@ -77,14 +78,14 @@ function ServidorWS(){
 		    });
 
 		    socket.on('movimiento',function(datos){
+		    	//var datos={nick:nick,numJugador:numJugador,direccion:direccion,x:x,y:y};
 		    	cli.enviarATodosMenosRemitente(socket,datos.codigo,"moverRemoto",datos);
 		    });
 
 		    socket.on("lanzarVotacion",function(nick,codigo){
 		    	juego.lanzarVotacion(nick,codigo);
 		    	var partida=juego.partidas[codigo];
-		    	var lista=partida.obtenerListaJugadoresVivos();
-		    	cli.enviarATodos(io, codigo,"votacion",lista);
+		    	cli.enviarATodos(io, codigo,"votacion",partida.fase.nombre);
 		    });
 
 		    socket.on("saltarVoto",function(nick,codigo){
@@ -121,24 +122,14 @@ function ServidorWS(){
 		    	juego.atacar(nick,codigo,inocente);
 		    	var partida=juego.partidas[codigo];
 		    	var fase=partida.fase.nombre;
-		    	cli.enviarATodos(io,codigo,"muereInocente",inocente);
-		    	cli.enviarRemitente(socket,"hasAtacado",fase);
 			    if (fase=="final"){
 			    	cli.enviarATodos(io, codigo, "final","ganan impostores");
 			    }
-		    });
-
-		    socket.on("realizarTarea",function(nick,codigo){
-		    	var partida=juego.partidas[codigo];
-		    	juego.realizarTarea(nick,codigo);
-		    	var percent=partida.obtenerPercentTarea(nick);
-		    	var global=partida.obtenerPercentGlobal();
-				cli.enviarRemitente(socket,"tareaRealizada",{"percent":percent,"goblal":global});			    	
-		    	var fase=partida.fase.nombre;
-		    	if (fase=="final"){
-			    	cli.enviarATodos(io, codigo, "final","ganan ciudadanos");
+			    else{
+			    	cli.enviarRemitente(socket,"muereInocente",fase);
 			    }
-		    });
+		    })
+
 		});
 	}
 	
