@@ -48,7 +48,7 @@ var final = false;
 
 function preload() {
     this.load.image("tiles", "cliente/assets/tilesets/tuxmon-sample-32px-extruded.png");
-    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town.json");
+    this.load.tilemapTiledJSON("map", "cliente/assets/tilemaps/tuxemon-town2.json");
 
     // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
     // the player animations (walking left, walking right, etc.) in one image. For more info see:
@@ -335,6 +335,8 @@ function create() {
     lanzarJugador(ws.nick, ws.numJugador);
     ws.estoyDentro();
     cw.mostrarBarraTareas(0);
+    cw.mostrarBarraTareasIndividual(0);
+
     cw.mostrarEnviar();
 
 

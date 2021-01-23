@@ -704,6 +704,7 @@ function Usuario(nick) {
         console.log("usuario " + this.nick + " realiza tarea " + this.encargo + " estadoTarea: " + this.estadoTarea);
     }
     this.obtenerPercentTarea = function() {
+        console.log(100 * (this.realizado / this.maxTarea))
         return 100 * (this.realizado / this.maxTarea);
     }
 }

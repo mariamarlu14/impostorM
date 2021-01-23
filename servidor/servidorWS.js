@@ -118,9 +118,11 @@ function ServidorWS() {
                 var partida = juego.partidas[codigo];
                 juego.realizarTarea(nick, codigo);
                 var percent = partida.obtenerPercentTarea(nick);
+                console.log(percent);
                 var global = partida.obtenerPercentGlobal();
                 cli.enviarRemitente(socket, "tareaRealizada", { "percent": percent, "goblal": global });
                 cli.enviarATodos(io, codigo, "finTarea", global);
+                cli.enviarRemitente(socket, "realizadaTarea", percent);
 
                 var fase = partida.fase.nombre;
                 if (fase == "final") {

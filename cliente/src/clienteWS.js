@@ -160,8 +160,12 @@ function ClienteWS() {
             finPartida(data);
         });
         this.socket.on("finTarea", function(data) {
-            console.log("asdsasadds" + data.global);
+            //console.log("Porcentaje global" + data);
             cw.mostrarBarraTareas(data);
+        });
+        this.socket.on("realizadaTarea", function(data) {
+            //console.log("Porcentaje individual" + data);
+            cw.mostrarBarraTareasIndividual(data);
         });
         this.socket.on("finEnvio", function(data) {
             // console.log("asdsasadds" + data.global);
@@ -178,6 +182,8 @@ function ClienteWS() {
         });
         this.socket.on("tareaRealizada", function(data) {
             console.log(data);
+            // cw.mostrarBarraTareasIndividual(data);
+
             //tareasOn=true;
         });
         this.socket.on("hasAtacado", function(fase) {

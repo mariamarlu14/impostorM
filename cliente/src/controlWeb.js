@@ -66,7 +66,7 @@ function ControlWeb($) {
         var cadena = '<div id="mER"><h3>Esperando rival</h3>';
         cadena = cadena + '<img id="gif" src="cliente/img/waiting.jpg"><br>';
         if (ws.owner) {
-            cadena = cadena + '<input type="button" class="btn btn-info" id="iniciar" value="Iniciar partida">';
+            cadena = cadena + '<input type="button" class="btn btn-primary" id="iniciar" value="Iniciar partida">';
         }
         cadena = cadena + '</div>';
         $('#esperando').append(cadena);
@@ -138,6 +138,7 @@ function ControlWeb($) {
         $('#modalGeneral').modal("show");
     }
 
+
     this.mostrarModalVotacion = function(lista) {
         this.limpiarModal();
         var cadena = '<div id="votacion"><h3>Votación</h3>';
@@ -189,6 +190,20 @@ function ControlWeb($) {
         cadena = cadena + '</div>';
 
         $('#barra').append(cadena);
+
+
+
+    }
+    this.mostrarBarraTareasIndividual = function(porcentaje) {
+        $('#porcenIndividual').remove();
+
+        var cadena = '<div class="progress" id="porcenIndividual">';
+        cadena = cadena + '<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="' + porcentaje + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + porcentaje + '%">';
+        cadena = cadena + '' + porcentaje + '% Individual';
+        cadena = cadena + '</div>';
+        cadena = cadena + '</div>';
+
+        $('#barraInd').append(cadena);
 
 
 
