@@ -137,7 +137,19 @@ function ServidorWS() {
                 } else {
                     socket.leave(codigo);
                 }
-            })
+            });
+            socket.on('enviarMensaje', function(nick, codigo, mensaje) {
+                var partida = juego.partidas[codigo];
+                var mensaje = juego.enviarMensaje(codigo, nick, mensaje);
+                console.log(mensaje)
+                cli.enviarATodos(io, codigo, "finEnvio", mensaje);
+
+                //socket.join(codigo);
+                //console.log('usuario: ' + nick + " envia mensaje al grupo " + codigo + " el mensaje " + mensaje);
+                //     cli.enviarATo(socket, "partidaCreada", { "codigo": codigo, "owner": nick });
+                // var lista = juego.listaMensajes();
+                //  cli.enviarGlobal(socket, "recibirListaPartidasDisponibles", lista);
+            });
         });
     }
 

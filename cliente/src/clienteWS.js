@@ -56,6 +56,9 @@ function ClienteWS() {
     this.abandonarPartida = function() {
         this.socket.emit("abandonarPartida", this.nick, this.codigo);
     }
+    this.enviarMensaje = function(mensaje) {
+        this.socket.emit("enviarMensaje", this.nick, this.codigo, mensaje);
+    }
 
     //servidor WS dentro del cliente
     this.lanzarSocketSrv = function() {
@@ -86,6 +89,7 @@ function ClienteWS() {
             cw.mostrarAbandonarPartida();
 
 
+
         });
         this.socket.on('nuevoJugador', function(lista) {
             //console.log(nick+" se une a la partida");
@@ -97,6 +101,7 @@ function ClienteWS() {
             if (fase == "jugando") {
                 cli.obtenerEncargo();
 
+                // cw.mostrarChat();
 
                 cw.limpiar();
                 lanzarJuego();
@@ -157,6 +162,10 @@ function ClienteWS() {
         this.socket.on("finTarea", function(data) {
             console.log("asdsasadds" + data.global);
             cw.mostrarBarraTareas(data);
+        });
+        this.socket.on("finEnvio", function(data) {
+            // console.log("asdsasadds" + data.global);
+            cw.mostrarChat(data.mensaje);
         });
         this.socket.on("muereInocente", function(inocente) {
             console.log('muere ' + inocente);

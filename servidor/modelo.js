@@ -107,6 +107,11 @@ function Juego(min) {
             return partida.usuarios[nick].abandonarPartida();
         }
     }
+    this.enviarMensaje = function(codigo, nick, mensaje) {
+
+        return this.partidas[codigo].usuarios[nick].enviarMensaje(mensaje);
+
+    }
 }
 
 function Partida(num, owner, codigo, juego) {
@@ -116,6 +121,7 @@ function Partida(num, owner, codigo, juego) {
     this.juego = juego;
     this.fase = new Inicial();
     this.usuarios = {};
+    this.mensajes = [];
     this.elegido = "no hay nadie elegido";
     this.encargos = ["jardines", "mobiliario", "basuras", "calles"];
 
@@ -138,6 +144,14 @@ function Partida(num, owner, codigo, juego) {
         }
         return { "codigo": this.codigo, "nick": nuevo, "numJugador": numero };
         //this.comprobarMinimo();		
+    }
+    this.enviarMensaje = function(mensaje) {
+        return this.fase.enviarMensaje(mensaje, this)
+    }
+    this.puedeEnviarMensaje = function(mensaje) {
+        this.mensajes.push(mensaje);
+        console.log(this.mensajes);
+        return { "codigo": this.codigo, "nick": this.nick, "mensaje": mensaje }
     }
     this.obtenerListaJugadores = function() {
         var lista = []
@@ -422,6 +436,7 @@ function Inicial() {
     this.atacar = function(inocente) {}
     this.lanzarVotacion = function() {}
     this.realizarTarea = function() {}
+    this.enviarMensaje = function(mensaje, partida) {}
 
     this.esInicial = function() {
         return true;
@@ -464,6 +479,8 @@ function Completado() {
     this.atacar = function(inocente) {}
     this.lanzarVotacion = function() {}
     this.realizarTarea = function() {}
+    this.enviarMensaje = function(mensaje, partida) {}
+
 
     this.esInicial = function() {
         return false;
@@ -495,6 +512,12 @@ function Jugando() {
         return partida.puedeAbandonarPartida(nick);
 
     }
+    this.enviarMensaje = function(mensaje, partida) {
+        console.log("estoy")
+        return partida.puedeEnviarMensaje(mensaje, partida);
+
+    }
+
     this.atacar = function(inocente, partida) {
         partida.puedeAtacar(inocente);
     }
@@ -533,6 +556,8 @@ function Votacion() {
     this.abandonarPartida = function(nick, partida) {}
     this.atacar = function(inocente) {}
     this.lanzarVotacion = function() {}
+    this.enviarMensaje = function(mensaje, partida) {}
+
     this.votar = function(sospechoso, partida) {
         partida.puedeVotar(sospechoso);
     }
@@ -571,6 +596,8 @@ function Final() {
     this.atacar = function(inocente) {}
     this.lanzarVotacion = function() {}
     this.realizarTarea = function() {}
+    this.enviarMensaje = function(mensaje, partida) {}
+
     this.esInicial = function() {
         return false;
     }
@@ -591,6 +618,12 @@ function Final() {
         return true;
     }
 
+}
+
+function Mensaje(mensaje) {
+    this.mensaje = mensaje;
+    this.nick;
+    this.partida;
 }
 
 function Usuario(nick) {
@@ -628,6 +661,12 @@ function Usuario(nick) {
         if (this.impostor && !(this.nick == inocente)) {
             this.partida.atacar(inocente);
         }
+    }
+    this.enviarMensaje = function(mensaje) {
+        return this.partida.enviarMensaje(mensaje);
+        /*if (this.partida.numeroJugadores()<=0){
+        	console.log(this.nick," era el último jugador");
+        }*/
     }
     this.esAtacado = function() {
         this.estado.esAtacado(this);

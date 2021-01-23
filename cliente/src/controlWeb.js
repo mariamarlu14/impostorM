@@ -191,6 +191,30 @@ function ControlWeb($) {
 
 
     }
+    this.mostrarChat = function(mensaje) {
+        $("#mostrarChat").remove();
+
+        var cadena = '<div id="mostrarChat">';
+        cadena = cadena + '<div id="menu">';
+        cadena = cadena + '<p class="welcome">Welcome, <b></b></p>';
+        cadena = cadena + '<div style="clear:both"></div>';
+        cadena = cadena + '</div>';
+        cadena = cadena + '<div id="chatbox">' + mensaje + '</div>';
+        cadena = cadena + '<form name="message" action="">';
+        cadena = cadena + '<input name="usermsg" type="text" id="usermsg" size="63" />';
+
+        cadena = cadena + ' <button type="button" class="btn btn-success .btn-xs" id="submitmsg">Enviar</button>';
+        cadena = cadena + ' </form>';
+        cadena = cadena + '</div>';
+        $('#chat').append(cadena);
+
+        $('#submitmsg').on('click', function() {
+            var mensaje = $('#usermsg').val();
+
+            $("#mostrarChat").remove();
+            ws.enviarMensaje(mensaje);
+        });
+    }
 
     this.limpiarModal = function() {
         $('#avisarImpostor').remove();
