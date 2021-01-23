@@ -334,6 +334,8 @@ function create() {
     teclaT = crear.input.keyboard.addKey('t');
     lanzarJugador(ws.nick, ws.numJugador);
     ws.estoyDentro();
+    cw.mostrarBarraTareas(0);
+
 }
 
 function crearColision() {

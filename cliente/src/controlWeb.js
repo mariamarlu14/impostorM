@@ -177,6 +177,20 @@ function ControlWeb($) {
             ws.abandonarPartida();
         });
     }
+    this.mostrarBarraTareas = function(porcentaje) {
+        $('#porcen').remove();
+
+        var cadena = '<div class="progress" id="porcen">';
+        cadena = cadena + '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="' + porcentaje + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + porcentaje + '%">';
+        cadena = cadena + '<span class="sr-only">40% completado (éxito)</span>';
+        cadena = cadena + '</div>';
+        cadena = cadena + '</div>';
+
+        $('#barra').append(cadena);
+
+
+
+    }
 
     this.limpiarModal = function() {
         $('#avisarImpostor').remove();
