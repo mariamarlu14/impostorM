@@ -141,7 +141,6 @@ function ServidorWS() {
             socket.on('enviarMensaje', function(nick, codigo, mensaje) {
                 var partida = juego.partidas[codigo];
                 var mensaje = juego.enviarMensaje(codigo, nick, mensaje);
-                console.log(mensaje)
                 cli.enviarATodos(io, codigo, "finEnvio", mensaje);
 
                 //socket.join(codigo);

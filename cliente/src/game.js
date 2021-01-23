@@ -335,7 +335,7 @@ function create() {
     lanzarJugador(ws.nick, ws.numJugador);
     ws.estoyDentro();
     cw.mostrarBarraTareas(0);
-    cw.mostrarChat(0);
+    cw.mostrarEnviar();
 
 
 }

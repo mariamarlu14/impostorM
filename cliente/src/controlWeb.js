@@ -10,7 +10,7 @@ function ControlWeb($) {
         cadena = cadena + '<label for="num">Número:</label>';
         cadena = cadena + '<input type="number" min="' + min + '" max="10" value="' + min + '" class="form-control" id="num">';
         cadena = cadena + '</div>';
-        cadena = cadena + '<button type="button" id="btnCrear" class="btn btn-info">Crear partida</button>';
+        cadena = cadena + '<button type="button" id="btnCrear" class="btn btn-primary">Crear partida</button>';
         cadena = cadena + '</div>';
 
 
@@ -37,7 +37,7 @@ function ControlWeb($) {
         }
         cadena = cadena + '</div>';
         //cadena=cadena+'</div>';
-        cadena = cadena + '<input type="button" class="btn btn-info" id="unirme" value="Unirme">';
+        cadena = cadena + '<input type="button" class="btn btn-primary" id="unirme" value="Unirme">';
         '</div>';
 
         $('#listaPartidas').append(cadena);
@@ -118,6 +118,8 @@ function ControlWeb($) {
         $('#mostrarListaPartidas').remove();
         $('#mER').remove();
         $('#mostrarListaEsperando').remove();
+        $('#mostrarImagen').remove();
+
     }
 
     this.mostrarModalSimple = function(msg) {
@@ -182,7 +184,7 @@ function ControlWeb($) {
 
         var cadena = '<div class="progress" id="porcen">';
         cadena = cadena + '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="' + porcentaje + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + porcentaje + '%">';
-        cadena = cadena + '<span class="sr-only">40% completado (éxito)</span>';
+        cadena = cadena + '' + porcentaje + '% Global';
         cadena = cadena + '</div>';
         cadena = cadena + '</div>';
 
@@ -191,29 +193,52 @@ function ControlWeb($) {
 
 
     }
-    this.mostrarChat = function(mensaje) {
-        $("#mostrarChat").remove();
+    this.mostrarEnviar = function() {
+        $("#mostrarEnvio").remove();
+        var cadena = '<div id="mostrarEnvio">';
 
-        var cadena = '<div id="mostrarChat">';
-        cadena = cadena + '<div id="menu">';
-        cadena = cadena + '<p class="welcome">Welcome, <b></b></p>';
-        cadena = cadena + '<div style="clear:both"></div>';
-        cadena = cadena + '</div>';
-        cadena = cadena + '<div id="chatbox">' + mensaje + '</div>';
+
         cadena = cadena + '<form name="message" action="">';
-        cadena = cadena + '<input name="usermsg" type="text" id="usermsg" size="63" />';
+        cadena = cadena + '<div>';
+
+        cadena = cadena + '<input type="text" class="form-control" id="usermsg" placeholder="Escribe un mensaje">';
+        cadena = cadena + '<br>';
+        cadena = cadena + '</div>';
 
         cadena = cadena + ' <button type="button" class="btn btn-success .btn-xs" id="submitmsg">Enviar</button>';
         cadena = cadena + ' </form>';
         cadena = cadena + '</div>';
-        $('#chat').append(cadena);
+        $('#envio').append(cadena);
 
         $('#submitmsg').on('click', function() {
             var mensaje = $('#usermsg').val();
 
-            $("#mostrarChat").remove();
+            $("#mostrarEnvio").remove();
             ws.enviarMensaje(mensaje);
         });
+    }
+    this.mostrarChat = function(data) {
+        $("#mostrarChat").remove();
+
+        var cadena = '<div class="panel panel-default" id="mostrarChat">';
+        // cadena = cadena + '<div id="menu">';
+        cadena = cadena + '<div class="panel-heading"> Mensaje de ' + data.nick + '</div>';
+        // cadena = cadena + '</div>';
+        cadena = cadena + '  <div class="panel-body">' + data.mensaje + '</div> ';
+        cadena = cadena + '</div>';
+
+        $('#chat').append(cadena);
+
+    }
+    this.mostrarImagen = function() {
+        $("#mostrarImagen").remove();
+
+        var cadena = '<div id="mostrarImagen">';
+        cadena = cadena + '<img src="cliente/img/maquina.png" class="img-responsive">';
+        cadena = cadena + '</div>';
+        $('#imagen').append(cadena);
+
+
     }
 
     this.limpiarModal = function() {

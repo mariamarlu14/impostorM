@@ -145,13 +145,16 @@ function Partida(num, owner, codigo, juego) {
         return { "codigo": this.codigo, "nick": nuevo, "numJugador": numero };
         //this.comprobarMinimo();		
     }
-    this.enviarMensaje = function(mensaje) {
-        return this.fase.enviarMensaje(mensaje, this)
+    this.enviarMensaje = function(mensaje, nick) {
+        console.log("aaaa", nick)
+
+        return this.fase.enviarMensaje(mensaje, nick, this);
     }
-    this.puedeEnviarMensaje = function(mensaje) {
-        this.mensajes.push(mensaje);
+    this.puedeEnviarMensaje = function(mensaje, nick, partida) {
+        this.mensajes.push(nick, mensaje);
+        // console.log(partida)
         console.log(this.mensajes);
-        return { "codigo": this.codigo, "nick": this.nick, "mensaje": mensaje }
+        return { "codigo": this.codigo, "nick": nick, "mensaje": mensaje }
     }
     this.obtenerListaJugadores = function() {
         var lista = []
@@ -512,9 +515,9 @@ function Jugando() {
         return partida.puedeAbandonarPartida(nick);
 
     }
-    this.enviarMensaje = function(mensaje, partida) {
-        console.log("estoy")
-        return partida.puedeEnviarMensaje(mensaje, partida);
+    this.enviarMensaje = function(mensaje, nick, partida) {
+        console.log("soy el nick", nick)
+        return partida.puedeEnviarMensaje(mensaje, nick, partida);
 
     }
 
@@ -620,11 +623,6 @@ function Final() {
 
 }
 
-function Mensaje(mensaje) {
-    this.mensaje = mensaje;
-    this.nick;
-    this.partida;
-}
 
 function Usuario(nick) {
     this.nick = nick;
@@ -663,7 +661,8 @@ function Usuario(nick) {
         }
     }
     this.enviarMensaje = function(mensaje) {
-        return this.partida.enviarMensaje(mensaje);
+        console.log("holaaaa", this.nick)
+        return this.partida.enviarMensaje(mensaje, this.nick);
         /*if (this.partida.numeroJugadores()<=0){
         	console.log(this.nick," era el último jugador");
         }*/

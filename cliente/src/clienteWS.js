@@ -165,7 +165,9 @@ function ClienteWS() {
         });
         this.socket.on("finEnvio", function(data) {
             // console.log("asdsasadds" + data.global);
-            cw.mostrarChat(data.mensaje);
+            cw.mostrarEnviar();
+
+            cw.mostrarChat(data);
         });
         this.socket.on("muereInocente", function(inocente) {
             console.log('muere ' + inocente);

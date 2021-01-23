@@ -40,61 +40,12 @@
         }
         
         #mostrarChat,
-        #loginform {
-            margin: 0 auto;
-            padding-bottom: 25px;
-            background: #EBF4FB;
-            width: 504px;
-            border: 1px solid #ACD8F0;
+        #mostrarEnvio {
+            width: 90%;
         }
         
-        #loginform {
-            padding-top: 18px;
-        }
-        
-        #loginform p {
-            margin: 5px;
-        }
-        
-        #chatbox {
-            text-align: left;
-            margin: 0 auto;
-            margin-bottom: 25px;
-            padding: 10px;
-            background: #fff;
-            height: 270px;
-            width: 430px;
-            border: 1px solid #ACD8F0;
-            overflow: auto;
-        }
-        
-        #usermsg {
-            width: 395px;
-            border: 1px solid #ACD8F0;
-        }
-        
-        #submit {
-            width: 60px;
-        }
-        
-        .error {
-            color: #ff0000;
-        }
-        
-        #menu {
-            padding: 12.5px 25px 12.5px 25px;
-        }
-        
-        .welcome {
-            float: left;
-        }
-        
-        .logout {
-            float: right;
-        }
-        
-        .msgln {
-            margin: 0 0 2px 0;
+        #porcen {
+            width: 73%;
         }
     </style>
 
@@ -115,33 +66,33 @@
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-4 offset-md-4"></div>
+
         </div>
 
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div id="crearPartida"></div>
+                    <div id="esperando"></div>
+                    <div id="listaPartidas"></div>
+                    <div id="listaEsperando"></div>
+                    <br>
+                    <div id="barra"></div>
 
+                    <div id="game-container"></div>
 
-        <div class="col-sm-6">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div id="crearPartida"></div>
-                        <div id="esperando"></div>
-                        <div id="listaPartidas"></div>
-                        <div id="listaEsperando"></div>
-                        <div class="row">
-                            <br>
-                            <div id="barra"></div>
+                    <br>
+                </div>
+                <div class="col-sm-6 center-block">
+                    <div id="imagen"></div>
 
-                            <div id="game-container"></div>
+                    <br>
+                    <div id="chat"></div>
+                    <br>
+                    <div id="envio"></div>
+                    <br>
 
-                        </div>
-                        <br>
-                    </div>
-                    <div class="col-sm-6">
-                        <!--<div id="mostrarImagen"></div>
-                        <img src="cliente/img/maquina.png" class="img-responsive">-->
-                        <br>
-                        <div id="chat"></div>
-
+                    <div>
                         <button data-toggle="collapse" class="btn btn-info" data-target="#demo">Intrucciones</button>
                         <div id="demo" class="collapse">
                             <p>Letra A para matar a los contrincantes</p>
@@ -149,28 +100,29 @@
                             <p>Letra V para hacer las votaciones</p>
 
                         </div>
-
-                    </div>
-                    <div class="col-sm-6">
-                        <br>
-                        <div id="botones"></div>
                     </div>
 
 
-                    <div class="modal" id="modalGeneral" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">ImpostorApp</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-                                </div>
-                                <div class="modal-body" id="contenidoModal">
-                                </div>
-                                <div class="modal-footer" id="pie">
-                                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                                </div>
+                </div>
+                <div class="col-sm-6">
+                    <br>
+                    <div id="botones" sytle="width: 504px;"></div>
+                </div>
+
+
+                <div class="modal" id="modalGeneral" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">ImpostorApp</h5>
+                                <button type="button" class="close btn btn-secondary" data-dismiss="modal" aria-label="Close">
+                               
+                                </button>
+                            </div>
+                            <div class="modal-body" id="contenidoModal">
+                            </div>
+                            <div class="modal-footer" id="pie">
+                                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                             </div>
                         </div>
                     </div>
@@ -178,6 +130,10 @@
             </div>
         </div>
 
+
+
+        <div class="col-sm-6">
+        </div>
     </div>
 
 
@@ -190,6 +146,8 @@
         var ws = new ClienteWS();
         var cw = new ControlWeb($);
         cw.mostrarCrearPartida(2);
+        cw.mostrarImagen();
+
         ws.listaPartidasDisponibles();
     </script>
 </body>
