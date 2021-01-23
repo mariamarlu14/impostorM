@@ -10,6 +10,9 @@ function ControlWeb($) {
         cadena = cadena + '<label for="num">Número:</label>';
         cadena = cadena + '<input type="number" min="' + min + '" max="10" value="' + min + '" class="form-control" id="num">';
         cadena = cadena + '</div>';
+
+
+
         cadena = cadena + '<button type="button" id="btnCrear" class="btn btn-primary">Crear partida</button>';
         cadena = cadena + '</div>';
 
@@ -18,6 +21,7 @@ function ControlWeb($) {
         $('#crearPartida').append(cadena);
 
         $('#btnCrear').on('click', function() {
+
             var nick = $('#nick').val();
             var num = $("#num").val();
             $("#mostrarCP").remove();
@@ -66,12 +70,25 @@ function ControlWeb($) {
         var cadena = '<div id="mER"><h3>Esperando rival</h3>';
         cadena = cadena + '<img id="gif" src="cliente/img/waiting.jpg"><br>';
         if (ws.owner) {
+            cadena = cadena + '<h4>Elige el mapa</h4>';
+            cadena = cadena + ' <div class="radio">';
+            cadena = cadena + '<label><input type="radio" id="primavera" name="optradio" checked>Primavera</label>';
+            cadena = cadena + '</div>';
+            cadena = cadena + ' <div class="radio">';
+            cadena = cadena + '<label><input type="radio" id="invierno"  name="optradio">Invierno</label>';
+            cadena = cadena + '</div>';
             cadena = cadena + '<input type="button" class="btn btn-primary" id="iniciar" value="Iniciar partida">';
+
         }
         cadena = cadena + '</div>';
         $('#esperando').append(cadena);
         $('#iniciar').click(function() {
-            ws.iniciarPartida();
+            if (document.getElementById("primavera").checked) {
+                var rutaMapa = "cliente/assets/tilemaps/tuxemon-town.json";
+            } else {
+                var rutaMapa = "cliente/assets/tilemaps/tuxemon-town2.json";
+            }
+            ws.iniciarPartida(rutaMapa);
         });
     }
 

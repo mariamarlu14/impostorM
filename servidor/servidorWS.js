@@ -37,11 +37,13 @@ function ServidorWS() {
                 cli.enviarATodos(io, codigo, "nuevoJugador", lista);
             });
 
-            socket.on('iniciarPartida', function(nick, codigo) {
+            socket.on('iniciarPartida', function(nick, codigo, rutaMapa) {
                 juego.iniciarPartida(nick, codigo);
                 var fase = juego.partidas[codigo].fase.nombre;
                 if (fase == "jugando") {
-                    cli.enviarATodos(io, codigo, "partidaIniciada", fase);
+                    var data = { "fase": fase, "rutaMapa": rutaMapa };
+
+                    cli.enviarATodos(io, codigo, "partidaIniciada", data);
                 }
             });
 
