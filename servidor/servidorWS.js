@@ -120,7 +120,6 @@ function ServidorWS() {
                 var partida = juego.partidas[codigo];
                 juego.realizarTarea(nick, codigo);
                 var percent = partida.obtenerPercentTarea(nick);
-                console.log(percent);
                 var global = partida.obtenerPercentGlobal();
                 cli.enviarRemitente(socket, "tareaRealizada", { "percent": percent, "goblal": global });
                 cli.enviarATodos(io, codigo, "finTarea", global);
@@ -147,11 +146,7 @@ function ServidorWS() {
                 var mensaje = juego.enviarMensaje(codigo, nick, mensaje);
                 cli.enviarATodos(io, codigo, "finEnvio", mensaje);
 
-                //socket.join(codigo);
-                //console.log('usuario: ' + nick + " envia mensaje al grupo " + codigo + " el mensaje " + mensaje);
-                //     cli.enviarATo(socket, "partidaCreada", { "codigo": codigo, "owner": nick });
-                // var lista = juego.listaMensajes();
-                //  cli.enviarGlobal(socket, "recibirListaPartidasDisponibles", lista);
+
             });
         });
     }

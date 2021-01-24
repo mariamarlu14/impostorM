@@ -218,9 +218,13 @@ function Partida(num, owner, codigo, juego) {
 
         // Si estamos jugando, comprobar si termina la partida
         if (this.fase.esJugando()) {
+            console.log("estoy aqui")
+
             resultado = this.comprobarFinal();
-            finalPartida = resultado.finalPartida;
-            mensaje = resultado.mensaje;
+            this.terminarPartida();
+
+            //  finalPartida = resultado.finalPartida;
+            // mensaje = resultado.mensaje;
         }
     }
     this.eliminarUsuario = function(nick) {
