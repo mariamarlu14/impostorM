@@ -7,8 +7,7 @@ var mapaR;
 
 function lanzarJuego(rutaMapa) {
     this.mapaR = rutaMapa;
-    console.log(rutaMapa)
-    console.log(this.mapaR);
+
     game = new Phaser.Game(config);
 }
 
@@ -62,8 +61,8 @@ function preload() {
     //this.load.atlas("atlas", "cliente/assets/atlas/atlas.png", "cliente/assets/atlas/atlas.json");
     //this.load.spritesheet("gabe","cliente/assets/images/gabe.png",{frameWidth:24,frameHeight:24});
     //this.load.spritesheet("gabe","cliente/assets/images/male01-2.png",{frameWidth:32,frameHeight:32});
-    this.load.spritesheet("varios", "cliente/assets/images/final2.png", { frameWidth: 24, frameHeight: 32 });
-    this.load.spritesheet("muertos", "cliente/assets/images/muertos.png", { frameWidth: 24, frameHeight: 32 });
+    this.load.spritesheet("varios", "cliente/assets/images/final2G.png", { frameWidth: 24, frameHeight: 32 });
+    this.load.spritesheet("muertos", "cliente/assets/images/muertos2.png", { frameWidth: 24, frameHeight: 32 });
 }
 
 function create() {

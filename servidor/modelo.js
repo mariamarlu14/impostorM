@@ -1,5 +1,6 @@
 function Juego(min) {
     this.min = min;
+
     this.partidas = {};
     this.crearPartida = function(num, owner) {
         let codigo = "fallo";
@@ -122,6 +123,7 @@ function Partida(num, owner, codigo, juego) {
     this.fase = new Inicial();
     this.usuarios = {};
     this.mensajes = [];
+    this.numeroImpostores = 1;
     this.elegido = "no hay nadie elegido";
     this.encargos = ["jardines", "mobiliario", "basuras", "calles"];
 
