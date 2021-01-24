@@ -18,7 +18,6 @@ function Juego(min) {
         if (this.partidas[codigo]) {
             res = this.partidas[codigo].agregarUsuario(nick);
         }
-        //console.log(res);
         return res;
     }
     this.numeroValido = function(num) {
@@ -148,14 +147,13 @@ function Partida(num, owner, codigo, juego) {
         //this.comprobarMinimo();		
     }
     this.enviarMensaje = function(mensaje, nick) {
-        console.log("aaaa", nick)
 
         return this.fase.enviarMensaje(mensaje, nick, this);
     }
     this.puedeEnviarMensaje = function(mensaje, nick, partida) {
         this.mensajes.push(nick, mensaje);
-        // console.log(partida)
-        console.log(this.mensajes);
+        console.log("El usuario: ", nick, " envia el mensaje ", mensaje);
+
         return { "codigo": this.codigo, "nick": nick, "mensaje": mensaje }
     }
     this.obtenerListaJugadores = function() {
@@ -218,7 +216,6 @@ function Partida(num, owner, codigo, juego) {
 
         // Si estamos jugando, comprobar si termina la partida
         if (this.fase.esJugando()) {
-            console.log("estoy aqui")
 
             resultado = this.comprobarFinal();
             this.terminarPartida();
@@ -522,7 +519,6 @@ function Jugando() {
 
     }
     this.enviarMensaje = function(mensaje, nick, partida) {
-        console.log("soy el nick", nick)
         return partida.puedeEnviarMensaje(mensaje, nick, partida);
 
     }
@@ -657,9 +653,7 @@ function Usuario(nick) {
     }
     this.abandonarPartida = function() {
         return this.partida.abandonarPartida(this.nick);
-        /*if (this.partida.numeroJugadores()<=0){
-        	console.log(this.nick," era el último jugador");
-        }*/
+
     }
     this.atacar = function(inocente) {
         if (this.impostor && !(this.nick == inocente)) {
@@ -667,11 +661,8 @@ function Usuario(nick) {
         }
     }
     this.enviarMensaje = function(mensaje) {
-        console.log("holaaaa", this.nick)
         return this.partida.enviarMensaje(mensaje, this.nick);
-        /*if (this.partida.numeroJugadores()<=0){
-        	console.log(this.nick," era el último jugador");
-        }*/
+
     }
     this.esAtacado = function() {
         this.estado.esAtacado(this);
@@ -710,7 +701,6 @@ function Usuario(nick) {
         console.log("usuario " + this.nick + " realiza tarea " + this.encargo + " estadoTarea: " + this.estadoTarea);
     }
     this.obtenerPercentTarea = function() {
-        console.log(100 * (this.realizado / this.maxTarea))
         return 100 * (this.realizado / this.maxTarea);
     }
 }
